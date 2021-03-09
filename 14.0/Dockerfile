@@ -31,6 +31,16 @@ RUN apt-get update && \
         python3-xlrd \
         python3-xlwt \
         xz-utils \
+        nano \
+        zip \
+        unzip \
+        wget \
+        gcc \
+        python3-dev \
+        build-essential \
+        libssl-dev \
+        libffi-dev \
+        cargo \
     && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
     && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
     && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
@@ -53,6 +63,9 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/
 # Install rtlcss (on Debian buster)
 RUN npm install -g rtlcss
 
+# Create odoo user in container/image
+RUN adduser --system --home /var/lib/odoo --quiet --uid 1000 --group odoo
+
 # Install Odoo
 ENV ODOO_VERSION 14.0
 ARG ODOO_RELEASE=20210308
@@ -63,15 +76,38 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
     && apt-get -y install --no-install-recommends ./odoo.deb \
     && rm -rf /var/lib/apt/lists/* odoo.deb
 
+# Install additional pip libraries
+
+RUN python3 -m pip install \
+                        wheel \
+                        erppeek \
+                        odooly \
+                        paramiko \
+                        cryptography \
+                        boto3 \
+                        botocore \
+                        -t /usr/lib/python3/dist-packages \
+    && python3 -m pip install \
+                        pretty_bad_protocol \
+                        -t /usr/lib/python3/dist-packages
+
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
 
 # Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN chown odoo /etc/odoo/odoo.conf \
-    && mkdir -p /mnt/extra-addons \
-    && chown -R odoo /mnt/extra-addons
-VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
+    && mkdir -p \
+        /mnt/extra-addons \
+        /mnt/backups \
+        /mnt/free-themes \
+        /mnt/enterprise \
+    && chown -R odoo \
+        /mnt/extra-addons \
+        /mnt/backups \
+        /mnt/free-themes \
+        /mnt/enterprise
+VOLUME ["/var/lib/odoo", "/mnt/extra-addons", "/mnt/backups", "/mnt/free-themes", "/mnt/enterprise" ]
 
 # Expose Odoo services
 EXPOSE 8069 8071 8072
