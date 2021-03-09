@@ -60,7 +60,6 @@ RUN npm install -g rtlcss
 # Create odoo user in container/image
 RUN adduser --system --home /var/lib/odoo --quiet --uid 1000 --group odoo
 
-
 # Install Odoo
 ENV ODOO_VERSION 14.0
 ARG ODOO_RELEASE=20221025
