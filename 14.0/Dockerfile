@@ -31,16 +31,22 @@ RUN apt-get update && \
         python3-xlrd \
         python3-xlwt \
         xz-utils \
+        # --- ADDITIONAL APT PACKAGES START BELOW ---
+        build-essential \
+        cargo \
+        gcc \
+        git \
+        less \
+        libffi-dev \
         nano \
-        zip \
+        net-tools \
+        openssh-client \
+        python3-dev \
+        rsync \
+        tree \
         unzip \
         wget \
-        gcc \
-        python3-dev \
-        build-essential \
-        libssl-dev \
-        libffi-dev \
-        cargo \
+        zip \
     && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
     && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
     && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
@@ -79,17 +85,21 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
 # Install additional pip libraries
 
 RUN python3 -m pip install \
-                        wheel \
-                        erppeek \
-                        odooly \
-                        paramiko \
-                        cryptography \
-                        boto3 \
-                        botocore \
-                        -t /usr/lib/python3/dist-packages \
+        boto3 \
+        botocore \
+        cryptography \
+        erppeek \
+        odooly \
+        paramiko \
+        pydevd-odoo \
+        pydevd-pycharm~=203.7717.65 \
+        pylint \
+        pylint-odoo \
+        wheel \
+        -t /usr/lib/python3/dist-packages \
     && python3 -m pip install \
-                        pretty_bad_protocol \
-                        -t /usr/lib/python3/dist-packages
+        pretty_bad_protocol \
+        -t /usr/lib/python3/dist-packages
 
 # Copy entrypoint script and Odoo configuration file
 COPY entrypoint.sh /
@@ -97,17 +107,16 @@ COPY odoo.conf /etc/odoo/
 
 # Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN chown odoo /etc/odoo/odoo.conf \
-    && mkdir -p \
-        /mnt/extra-addons \
-        /mnt/backups \
-        /mnt/free-themes \
-        /mnt/enterprise \
-    && chown -R odoo \
-        /mnt/extra-addons \
-        /mnt/backups \
-        /mnt/free-themes \
-        /mnt/enterprise
-VOLUME ["/var/lib/odoo", "/mnt/extra-addons", "/mnt/backups", "/mnt/free-themes", "/mnt/enterprise" ]
+    && mkdir -p /mnt/{backups,community,enterprise,extra-addons,themes,scripts} \
+    && chown -R odoo /mnt 
+
+# Copy scripts
+COPY scripts /mnt/scripts
+RUN chown -R odoo /mnt/scripts \
+    && find /mnt/scripts -type d -exec chmod a+x {} \;
+
+# No need to expose volumes for development
+#VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
 
 # Expose Odoo services
 EXPOSE 8069 8071 8072
