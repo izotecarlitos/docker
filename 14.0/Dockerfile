@@ -92,12 +92,12 @@ RUN python3 -m pip install \
         odooly \
         paramiko \
         pydevd-odoo \
-        pylint \
         wheel \
         -t /usr/lib/python3/dist-packages \
     && python3 -m pip install \
         pretty_bad_protocol \
         pydevd-pycharm~=203.7717.65 \
+        pylint \
         pylint-odoo \
         -t /usr/lib/python3/dist-packages
 
