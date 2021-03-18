@@ -92,13 +92,13 @@ RUN python3 -m pip install \
         odooly \
         paramiko \
         pydevd-odoo \
-        pydevd-pycharm~=203.7717.65 \
         pylint \
-        pylint-odoo \
         wheel \
         -t /usr/lib/python3/dist-packages \
     && python3 -m pip install \
         pretty_bad_protocol \
+        pydevd-pycharm~=203.7717.65 \
+        pylint-odoo \
         -t /usr/lib/python3/dist-packages
 
 # Copy entrypoint script and Odoo configuration file
