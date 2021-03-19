@@ -87,6 +87,7 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
 RUN python3 -m pip install \
         boto3 \
         botocore \
+        crypto \
         cryptography \
         erppeek \
         odooly \
