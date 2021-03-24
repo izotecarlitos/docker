@@ -42,6 +42,7 @@ RUN apt-get update && \
         net-tools \
         openssh-client \
         python3-dev \
+        python3-matplotlib \
         rsync \
         tree \
         unzip \
@@ -89,6 +90,9 @@ RUN python3 -m pip install \
         botocore \
         cryptography \
         erppeek \
+        locust==1.4.3 \
+        odoo-client-lib==1.2.2 \
+        OdooLocust==1.3.0 \
         odooly \
         paramiko \
         pydevd-odoo \
