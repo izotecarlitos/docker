@@ -90,9 +90,6 @@ RUN python3 -m pip install \
         botocore \
         cryptography \
         erppeek \
-        locust==1.4.3 \
-        odoo-client-lib==1.2.2 \
-        OdooLocust==1.3.0 \
         odooly \
         paramiko \
         pydevd-odoo \
@@ -100,6 +97,9 @@ RUN python3 -m pip install \
         wheel \
         -t /usr/lib/python3/dist-packages \
     && python3 -m pip install \
+        locust==1.4.3 \
+        odoo-client-lib==1.2.2 \
+        OdooLocust==1.3.0 \
         pretty_bad_protocol \
         pydevd-pycharm~=203.7717.65 \
         pylint \
