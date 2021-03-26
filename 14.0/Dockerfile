@@ -7,8 +7,8 @@ SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ENV LANG C.UTF-8
 
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
         dirmngr \
@@ -73,6 +73,7 @@ RUN npm install -g rtlcss
 # Create odoo user in container/image
 RUN adduser --system --home /var/lib/odoo --quiet --uid 1000 --group odoo
 
+
 # Install Odoo
 ENV ODOO_VERSION 14.0
 ARG ODOO_RELEASE=20221025
@@ -84,27 +85,26 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
     && rm -rf /var/lib/apt/lists/* odoo.deb
 
 # Install additional pip libraries
-
 RUN python3 -m pip install \
-        boto3 \
-        botocore \
-        cryptography \
-        erppeek \
-        odooly \
-        paramiko \
-        pydevd-odoo \
-        pyOpenSSL \
-        wheel \
-        -t /usr/lib/python3/dist-packages \
-    && python3 -m pip install \
-        locust==1.4.3 \
-        odoo-client-lib==1.2.2 \
-        OdooLocust==1.3.0 \
-        pretty_bad_protocol \
-        pydevd-pycharm~=203.7717.65 \
-        pylint \
-        pylint-odoo \
-        -t /usr/lib/python3/dist-packages
+    wheel \
+    -t /usr/lib/python3/dist-packages 
+RUN python3 -m pip install \
+    boto3 \
+    botocore \
+    cryptography \
+    erppeek \
+    locust==1.4.3 \
+    odoo-client-lib==1.2.2 \
+    OdooLocust==1.3.0 \
+    odooly \
+    paramiko \
+    pretty_bad_protocol \
+    pydevd-odoo \
+    pydevd-pycharm~=203.7717.65 \
+    pylint \
+    pylint-odoo \
+    pyOpenSSL \
+    -t /usr/lib/python3/dist-packages
 
 # Copy entrypoint script and Odoo configuration file
 COPY entrypoint.sh /
