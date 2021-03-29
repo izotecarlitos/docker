@@ -130,7 +130,7 @@ RUN chown odoo /etc/odoo/odoo.conf \
 # Copy scripts
 COPY scripts /mnt/scripts
 RUN chown -R odoo /mnt/scripts \
-    && find /mnt/scripts -type d -exec chmod a+x {} \;
+    && find /mnt/scripts -type f -exec chmod a+x {} \;
 
 # No need to expose volumes for development
 #VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
