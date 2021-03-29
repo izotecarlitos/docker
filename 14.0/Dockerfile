@@ -100,7 +100,7 @@ RUN python3 -m pip install \
     paramiko \
     pretty_bad_protocol \
     pydevd-odoo \
-    pydevd-pycharm~=203.7717.65 \
+    pydevd-pycharm~=203.7717.81 \
     pylint \
     pylint-odoo \
     pyOpenSSL \
