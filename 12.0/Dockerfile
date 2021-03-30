@@ -110,6 +110,10 @@ RUN python3 -m pip install \
     OdooLocust==1.0.1 \
     odooly \
     paramiko \
+    pigar \
+    pip-tools \
+    pipdeptree \
+    pipreqs \ 
     pretty_bad_protocol \
     pydevd-odoo \
     pydevd-pycharm~=203.7717.81 \
