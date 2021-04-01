@@ -42,6 +42,7 @@ RUN apt-get update \
         net-tools \
         openssh-client \
         python3-dev \
+        python3-docutils \
         python3-matplotlib \
         rsync \
         tree \
