@@ -37,6 +37,7 @@ RUN apt-get update \
             cargo \
             gcc \
             git \
+            iputils-* \
             less \
             libffi-dev \
             nano \
