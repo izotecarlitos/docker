@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+
+  # Postgres database server
+  db:
+    container_name: postgres_for_vODOO_VERSION
+    image: postgres:12.5
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - POSTGRES_PORT:5432/tcp
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+  # Pgadmin4 
+  pgadmin:
+    container_name: pgadmin4_for_vODOO_VERSION
+    image: dpage/pgadmin4:latest
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - PGADMIN_PORT:80/tcp
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=developer@izote.net
+      - PGADMIN_DEFAULT_PASSWORD=odoo
+      - PGADMIN_LISTEN_PORT=80
+
+  # Odoo Server
+  web:
+    container_name: odoo_vODOO_VERSION
+    image: izotecarlitos/odoo-container:ODOO_VERSION.0
+    #image: odoo:ODOO_VERSION.0
+    depends_on:
+      - db
+    ports:
+      - "ODOO_PORT:8069"
+    volumes:
+      # Odoo Configuration directory
+      - ./config:/etc/odoo 
+      # Odoo local development
+      - ./backups:/mnt/backups
+      - ./extra-addons:/mnt/extra-addons
+      - ./filestore:/var/lib/odoo
+      # Odoo shared sources to be used by the running container
+      #- ../../odoo_latest_src/community/vODOO_VERSION/odoo:/mnt/community                      # See note 1 
+      - ../../odoo_latest_src/community/ODOO_VERSION.0/odoo:/usr/lib/python3/dist-packages/odoo  # See note 1
+      #- ../../odoo_latest_src/enterprise/ODOO_VERSION.0/:/mnt/enterprise
+      - ../../odoo_latest_src/themes/ODOO_VERSION.0:/mnt/themes
+      - ../../odoo_latest_src/appstore/ODOO_VERSION.0:/mnt/appstore
+
+    # Use this command to initialize your database with 
+    # the modules of your preference
+    #command: odoo
+    #         --init website_sale,stock,sale_management,purchase,mass_mailing,l10n_cl,im_livechat,crm,board,account
+    #         --without-demo
+    #         --dev=all
+    #         --database name_your_db
+
+    # Use this command to update all modules when the container starts
+    #command: odoo --update all --dev=all --database name_your_db
+
+    # Use this command to update a specific module when the container starts
+    #command: odoo --update name_your_module --dev=all --database name_your_db
+
+    # Use this command to install runbot. Ensure that the runbot module is 
+    # located in your extra-addons path 
+    # Runbot being an odoo addon, you need to start odoo giving runbot 
+    # in the addons path. Install runbot by giving the -i instruction
+    # command: odoo 
+    #          --init runbot 
+    #          --stop-after-init 
+    #          --without-demo=1
+    #          --database runbot_db 
+
+    # Use this command to launch runbot
+    #command: odoo
+    #         --limit-memory-soft 4294967296 
+    #         --limit-memory-hard 4311744512 
+    #         --limit-time-real-cron=1800
+    #         --database runbot_db
+    
+volumes:
+  # Postgres /var/lib/postgresql/data
+  pg-data:
+    driver: local
+    
+  # Pgadmin /var/lib/pgadmin
+  pgadmin-data:
+    driver: local
+
+# Notes:
+# 1) use /mnt/community in the container if you want to copy the contents from the container to the host
+#    use /usr/lib/python3/dist-packages/odoo if you want to inject the sources from your host into the container
