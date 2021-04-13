@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RunManager" selected="Python Debug Server.CUSTOMER_PROJECT_ID">
+    <configuration name="CUSTOMER_PROJECT_ID" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug">
+      <module name="CUSTOMER_PROJECT_ID" />
+      <option name="PORT" value="4444" />
+      <option name="HOST" value="DEV_MACHINE_IP" />
+      <PathMappingSettings>
+        <option name="pathMappings">
+          <list>
+            <mapping local-root="ODOO_SOURCE_HOMEcommunity/ODOO_VERSION.0/odoo" remote-root="/usr/lib/python3/dist-packages/odoo" />
+            <mapping local-root="ODOO_SOURCE_HOMEappstore/ODOO_VERSION.0" remote-root="/mnt/appstore" />
+            <mapping local-root="ODOO_SOURCE_HOMEenterprise/ODOO_VERSION.0" remote-root="/mnt/enterprise" />
+            <mapping local-root="ODOO_SOURCE_HOMEthemes/ODOO_VERSION.0" remote-root="/mnt/themes" />            
+            <mapping local-root="CUSTOMER_PROJECT_HOMEextra-addons" remote-root="/mnt/extra-addons" />
+          </list>
+        </option>
+      </PathMappingSettings>
+      <option name="REDIRECT_OUTPUT" value="true" />
+      <option name="SUSPEND_AFTER_CONNECT" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="CUSTOMER_PROJECT_ID" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="db" />
+              <option value="pgadmin" />
+              <option value="web" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Docker.CUSTOMER_PROJECT_ID" />
+      <item itemvalue="Python Debug Server.CUSTOMER_PROJECT_ID" />
+    </list>
+  </component>
+</project>
