@@ -77,8 +77,8 @@ RUN adduser --system --home /var/lib/odoo --quiet --uid 1000 --group odoo
 
 # Install Odoo
 ENV ODOO_VERSION 13.0
-ARG ODOO_RELEASE=20210330
-ARG ODOO_SHA=0e7a35f95285b360d01f6da0e64282519d025f31
+ARG ODOO_RELEASE=20210407
+ARG ODOO_SHA=ca37f801e71721044351a6457dcdc4091a138771
 RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
         && echo "${ODOO_SHA} odoo.deb" | sha1sum -c - \
         && apt-get update \
