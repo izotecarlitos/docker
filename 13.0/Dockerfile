@@ -6,6 +6,9 @@ SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 # Generate locale C.UTF-8 for postgres and general locale data
 ENV LANG C.UTF-8
 
+#APT dependecies from file
+ADD sources/apt.txt /mnt/sources/apt.txt
+
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
 RUN apt-get update \
         && apt-get install -y --no-install-recommends \
@@ -30,25 +33,7 @@ RUN apt-get update \
             python3-xlrd \
             python3-xlwt \
             xz-utils \
-            # --- ADDITIONAL APT PACKAGES START BELOW ---
-            build-essential \
-            cargo \
-            gcc \
-            git \
-            iputils-* \
-            less \
-            libffi-dev \
-            nano \
-            net-tools \
-            openssh-client \
-            python3-dev \
-            python3-docutils \
-            python3-matplotlib \
-            rsync \
-            tree \
-            unzip \
-            wget \
-            zip \
+        && awk '! /^ *(#|$)/' /mnt/sources/apt.txt | xargs -r apt-get install -yq \
         && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
         && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
         && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
@@ -85,30 +70,14 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
         && apt-get -y install --no-install-recommends ./odoo.deb \
         && rm -rf /var/lib/apt/lists/* odoo.deb
 
+#Install aditional python dependencies
+ADD sources/pip.txt /mnt/sources/pip.txt
+
 # Install additional pip libraries
 RUN python3 -m pip install \
     wheel \
     -t /usr/lib/python3/dist-packages 
-RUN python3 -m pip install \
-    boto3 \
-    botocore \
-    cryptography \
-    erppeek \
-    locust==1.4.3 \
-    odoo-client-lib==1.2.2 \
-    OdooLocust==1.3.0 \
-    odooly \
-    paramiko \
-    pigar \
-    pip-tools \
-    pipdeptree \
-    pipreqs \ 
-    pretty_bad_protocol \
-    pydevd-odoo \
-    pydevd-pycharm~=203.7717.81 \
-    pylint \
-    pylint-odoo \
-    pyOpenSSL \
+RUN python3 -m pip install -r /mnt/sources/pip.txt \
     -t /usr/lib/python3/dist-packages
 
 # Copy entrypoint script and Odoo configuration file
