@@ -94,7 +94,7 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
 # Install additional pip libraries
 RUN python3 -m pip install \
     wheel \
-    -t /usr/lib/python3/dist-packages 
+    -t /usr/lib/python3/dist-packages
 RUN python3 -m pip install \
     boto3 \
     botocore \
@@ -108,7 +108,7 @@ RUN python3 -m pip install \
     pigar \
     pip-tools \
     pipdeptree \
-    pipreqs \ 
+    pipreqs \
     pretty_bad_protocol \
     pydevd-odoo \
     pydevd-pycharm~=203.7717.81 \
@@ -128,7 +128,7 @@ COPY odoo.conf /etc/odoo/
 # Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN chown odoo /etc/odoo/odoo.conf \
     && mkdir -p /mnt/{appstore,backups,community,enterprise,extra-addons,themes,scripts} \
-    && chown -R odoo /mnt 
+    && chown -R odoo /mnt
 
 # Copy scripts
 COPY scripts /mnt/scripts

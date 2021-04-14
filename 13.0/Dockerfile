@@ -54,6 +54,11 @@ RUN apt-get update \
         && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
+#APT dependecies from file
+ADD sources/apt.txt /opt/sources/apt.txt
+RUN apt update \
+  && awk '! /^ *(#|$)/' /opt/sources/apt.txt | xargs -r apt-get install -yq
+
 # install latest postgresql-client
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
         && GNUPGHOME="$(mktemp -d)" \
@@ -88,7 +93,7 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
 # Install additional pip libraries
 RUN python3 -m pip install \
     wheel \
-    -t /usr/lib/python3/dist-packages 
+    -t /usr/lib/python3/dist-packages
 RUN python3 -m pip install \
     boto3 \
     botocore \
@@ -102,7 +107,7 @@ RUN python3 -m pip install \
     pigar \
     pip-tools \
     pipdeptree \
-    pipreqs \ 
+    pipreqs \
     pretty_bad_protocol \
     pydevd-odoo \
     pydevd-pycharm~=203.7717.81 \
@@ -111,6 +116,10 @@ RUN python3 -m pip install \
     pyOpenSSL \
     -t /usr/lib/python3/dist-packages
 
+#Install aditional python dependencies
+ADD sources/pip.txt /opt/sources/pip.txt
+RUN pip3 install -r /opt/sources/pip.txt
+
 # Copy entrypoint script and Odoo configuration file
 COPY entrypoint.sh /
 COPY odoo.conf /etc/odoo/
@@ -118,7 +127,7 @@ COPY odoo.conf /etc/odoo/
 # Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN chown odoo /etc/odoo/odoo.conf \
     && mkdir -p /mnt/{appstore,backups,community,enterprise,extra-addons,themes,scripts} \
-    && chown -R odoo /mnt 
+    && chown -R odoo /mnt
 
 # Copy scripts
 COPY scripts /mnt/scripts
