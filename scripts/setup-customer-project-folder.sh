@@ -15,6 +15,7 @@ if [ -d $CUSTOMER_PROJECT_HOME ]
         read -p 'Which port on the host will be mapped to 8069 in the odoo-container? ' ODOO_PORT
         read -p 'Which port on the host will be mapped to 80 in the pgadmin container? ' PGADMIN_PORT
         read -p 'Which port on the host will be mapped to 5432 in the postgres container? ' POSTGRES_PORT
+        read -p 'Which port on the host will be mapped to 8080 in the mail container? (Do not use 9000 as it will be used by Portainer)' MAIL_PORT
 
         echo "\nCreating $CUSTOMER_PROJECT_HOME\n"
         mkdir -p $CUSTOMER_PROJECT_HOME
@@ -27,6 +28,7 @@ if [ -d $CUSTOMER_PROJECT_HOME ]
         sed -i '' "s|ODOO_PORT|$ODOO_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
         sed -i '' "s|POSTGRES_PORT|$POSTGRES_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
         sed -i '' "s|PGADMIN_PORT|$PGADMIN_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+        sed -i '' "s|MAIL_PORT|$MAIL_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
 
         FOLDERS=(backups extra-addons filestore)
 
