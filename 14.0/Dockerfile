@@ -55,6 +55,11 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
     && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
+#APT dependecies from file
+ADD sources/apt.txt /opt/sources/apt.txt
+RUN apt update \
+  && awk '! /^ *(#|$)/' /opt/sources/apt.txt | xargs -r apt-get install -yq
+
 # install latest postgresql-client
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
     && GNUPGHOME="$(mktemp -d)" \
@@ -111,6 +116,10 @@ RUN python3 -m pip install \
     pylint-odoo \
     pyOpenSSL \
     -t /usr/lib/python3/dist-packages
+
+#Install aditional python dependencies
+ADD sources/pip.txt /opt/sources/pip.txt
+RUN pip3 install -r /opt/sources/pip.txt
 
 # Copy entrypoint script and Odoo configuration file
 COPY entrypoint.sh /
