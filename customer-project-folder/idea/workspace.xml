@@ -27,6 +27,7 @@
             <list>
               <option value="db" />
               <option value="pgadmin" />
+              <option value="mail" />
               <option value="web" />
             </list>
           </option>
