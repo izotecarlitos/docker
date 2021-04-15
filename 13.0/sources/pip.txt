@@ -17,3 +17,4 @@ pydevd-pycharm~=211.6693.115
 pylint
 pylint-odoo
 pyOpenSSL
+firebase_admin
