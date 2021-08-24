@@ -243,7 +243,7 @@ case ${UPDATE_ALL:0:1} in
                 "Quit")
                     exit 
                     ;;
-                *) echo "Your selection: $REPLY is Invalid. Please try again.\n";;
+                *) printf 'Your selection: %s is Invalid. Please try again.\n' "$REPLY";;
             esac
         done
         # Add one line break
