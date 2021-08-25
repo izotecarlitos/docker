@@ -28,6 +28,7 @@ else
 
     printf 'Copying project structure\n'
     cp -a ../customer-project-folder/. "$CUSTOMER_PROJECT_HOME"
+    mv "$CUSTOMER_PROJECT_HOME"gitignore "$CUSTOMER_PROJECT_HOME".gitignore
 
     printf 'Configuring files and folders\n'
     sed -i "s|ODOO_VERSION|$ODOO_VERSION|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml        
@@ -50,7 +51,7 @@ else
             printf 'Setup done for Enterprise Edition. \n'
             ;;
         *)
-            sed -i '' '/enterprise/d' "$CUSTOMER_PROJECT_HOME_IDEA"CUSTOMER_PROJECT_ID.iml "$CUSTOMER_PROJECT_HOME_IDEA"workspace.xml "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+            sed -i '/enterprise/d' "$CUSTOMER_PROJECT_HOME_IDEA"CUSTOMER_PROJECT_ID.iml "$CUSTOMER_PROJECT_HOME_IDEA"workspace.xml "$CUSTOMER_PROJECT_HOME"docker-compose.yml
             printf 'Setup done for Community Edition. \n'
             ;;
     esac
