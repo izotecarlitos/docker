@@ -21,6 +21,7 @@ else
 
     echo "Copying project structure\n"
     cp -a ../customer-project-folder/. "$CUSTOMER_PROJECT_HOME"
+    mv "$CUSTOMER_PROJECT_HOME"gitignore "$CUSTOMER_PROJECT_HOME".gitignore
 
     echo "Configuring files and folders\n"
     sed -i '' "s|ODOO_VERSION|$ODOO_VERSION|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
