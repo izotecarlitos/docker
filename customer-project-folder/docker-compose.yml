@@ -31,7 +31,7 @@ services:
 
   # Mail Server (for test/debug Odoo emails)    
   mail:
-    container_name: mail_for_v14
+    container_name: mail_for_vODOO_VERSION
     image: greenmail/standalone:latest
     ports:
       - "25:25"
