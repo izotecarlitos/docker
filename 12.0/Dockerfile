@@ -75,8 +75,8 @@ RUN adduser --system --home /var/lib/odoo --quiet --uid 1000 --group odoo
 
 # Install Odoo
 ENV ODOO_VERSION 12.0
-ARG ODOO_RELEASE=20210407
-ARG ODOO_SHA=c045039b78bf624cafa00b84f5b2b2b1b5fe532e
+ARG ODOO_RELEASE=20210809
+ARG ODOO_SHA=7834befe1d22ae1c30bce23e1c10ab83a2963d26
 RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
         && echo "${ODOO_SHA} odoo.deb" | sha1sum -c - \
         && apt-get update \
