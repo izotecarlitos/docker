@@ -75,6 +75,7 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
 ADD sources/pip.txt /mnt/sources/pip.txt
 
 # Install additional pip libraries
+RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install \
     wheel \
     -t /usr/lib/python3/dist-packages 
