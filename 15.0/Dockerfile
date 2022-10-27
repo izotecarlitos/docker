@@ -12,46 +12,29 @@ ADD sources/apt.txt /mnt/sources/apt.txt
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        ca-certificates \
-        curl \
-        dirmngr \
-        fonts-noto-cjk \
-        gnupg \
-        libssl-dev \
-        node-less \
-        npm \
-        python3-num2words \
-        python3-pdfminer \
-        python3-pip \
-        python3-phonenumbers \
-        python3-pyldap \
-        python3-qrcode \
-        python3-renderpm \
-        python3-setuptools \
-        python3-slugify \
-        python3-vobject \
-        python3-watchdog \
-        python3-xlrd \
-        python3-xlwt \
-        xz-utils \
-        build-essential \
-        cargo \
-        gcc \
-        git \
-        iputils-* \
-        less \
-        libffi-dev \
-        nano \
-        net-tools \
-        openssh-client \
-        python3-dev \
-        python3-docutils \
-        python3-matplotlib \
-        rsync \
-        tree \
-        unzip \
-        wget \
-        zip \
+	ca-certificates \
+	curl \
+	dirmngr \
+	fonts-noto-cjk \
+	gnupg \
+	libssl-dev \
+	node-less \
+	npm \
+	python3-num2words \
+	python3-pdfminer \
+	python3-pip \
+	python3-phonenumbers \
+	python3-pyldap \
+	python3-qrcode \
+	python3-renderpm \
+	python3-setuptools \
+	python3-slugify \
+	python3-vobject \
+	python3-watchdog \
+	python3-xlrd \
+	python3-xlwt \
+	xz-utils \
+	$(cat /mnt/sources/apt.txt) \
     && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
     && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
     && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
@@ -76,7 +59,6 @@ RUN npm install -g rtlcss
 
 # Create odoo user in container/image
 RUN adduser --system --home /var/lib/odoo --quiet --uid 1000 --group odoo
-
 
 # Install Odoo
 ENV ODOO_VERSION 15.0

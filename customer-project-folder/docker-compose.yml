@@ -71,6 +71,15 @@ services:
       - ../../odoo_latest_src/themes/ODOO_VERSION.0:/mnt/themes
       - ../../odoo_latest_src/appstore/ODOO_VERSION.0:/mnt/appstore
 
+volumes:
+  # Postgres /var/lib/postgresql/data
+  pg-data:
+    driver: local
+    
+  # Pgadmin /var/lib/pgadmin
+  pgadmin-data:
+    driver: local
+
     # Use this command to initialize your database with 
     # the modules of your preference
     #command: odoo
@@ -101,15 +110,6 @@ services:
     #         --limit-memory-hard 4311744512 
     #         --limit-time-real-cron=1800
     #         --database runbot_db
-    
-volumes:
-  # Postgres /var/lib/postgresql/data
-  pg-data:
-    driver: local
-    
-  # Pgadmin /var/lib/pgadmin
-  pgadmin-data:
-    driver: local
 
 # Notes:
 # 1) use /mnt/community in the container if you want to copy the contents from the container to the host

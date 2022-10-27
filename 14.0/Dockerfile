@@ -10,49 +10,31 @@ ENV LANG C.UTF-8
 ADD sources/apt.txt /mnt/sources/apt.txt
 
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        ca-certificates \
-        curl \
-        dirmngr \
-        fonts-noto-cjk \
-        gnupg \
-        libssl-dev \
-        node-less \
-        npm \
-        python3-num2words \
-        python3-pdfminer \
-        python3-pip \
-        python3-phonenumbers \
-        python3-pyldap \
-        python3-qrcode \
-        python3-renderpm \
-        python3-setuptools \
-        python3-slugify \
-        python3-vobject \
-        python3-watchdog \
-        python3-xlrd \
-        python3-xlwt \
-        xz-utils \
-        build-essential \
-        cargo \
-        gcc \
-        git \
-        iputils-* \
-        less \
-        libffi-dev \
-        nano \
-        net-tools \
-        openssh-client \
-        python3-dev \
-        python3-docutils \
-        python3-matplotlib \
-        rsync \
-        tree \
-        unzip \
-        wget \
-        zip \
-    && awk '! /^ *(#|$)/' /mnt/sources/apt.txt | xargs -r apt-get install -yq \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+	ca-certificates \
+	curl \
+	dirmngr \
+	fonts-noto-cjk \
+	gnupg \
+	libssl-dev \
+	node-less \
+	npm \
+	python3-num2words \
+	python3-pdfminer \
+	python3-pip \
+	python3-phonenumbers \
+	python3-pyldap \
+	python3-qrcode \
+	python3-renderpm \
+	python3-setuptools \
+	python3-slugify \
+	python3-vobject \
+	python3-watchdog \
+	python3-xlrd \
+	python3-xlwt \
+	xz-utils \
+	$(cat /mnt/sources/apt.txt) \
     && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
     && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
     && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
@@ -78,11 +60,10 @@ RUN npm install -g rtlcss
 # Create odoo user in container/image
 RUN adduser --system --home /var/lib/odoo --quiet --uid 1000 --group odoo
 
-
 # Install Odoo
 ENV ODOO_VERSION 14.0
-ARG ODOO_RELEASE=20221025
-ARG ODOO_SHA=3be24ed710e51041a1b23d2ae55408077572cc5a
+ARG ODOO_RELEASE=20221027
+ARG ODOO_SHA=929888cdeee4d2fdb8bd827a4bb8397e65a6f271
 RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
     && echo "${ODOO_SHA} odoo.deb" | sha1sum -c - \
     && apt-get update \
