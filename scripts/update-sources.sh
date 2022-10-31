@@ -4,11 +4,12 @@ echo 'Do you want to update everything [ Y / N ]?'
 read -r UPDATE_ALL 
 
 # Global directory paths
-SOURCES_HOME=~/projects/odoo_latest_src/
+SOURCES_HOME=~/projects/odoo_src/
 COMMUNITY_HOME="$SOURCES_HOME"community/
 ENTERPRISE_HOME="$SOURCES_HOME"enterprise/
-ENTERPRISE_TOKEN="$SOURCES_HOME"token/token.txt
 STUBS_HOME="$SOURCES_HOME"odoo-stubs/
+
+ENTERPRISE_TOKEN=~/projects/odoo-docker/github_token/token.txt
 
 # Global script control variables
 ODOO_VERSION=""
@@ -18,7 +19,7 @@ DOWNLOAD_ODOO_STUBS="Y"
 DOWNLOAD_ODOO_IMAGE="Y"
 
 # Supported Odoo Versions
-ODOO_VERSIONS=(14.0 13.0 12.0)
+ODOO_VERSIONS=(16.0 15.0 14.0 13.0 12.0)
 
 # Function to download Odoo Community
 download_odoo_community() {
@@ -33,13 +34,13 @@ download_odoo_community() {
 
         curl https://nightly.odoo.com/"$ODOO_VERSION"/nightly/tgz/odoo_"$ODOO_VERSION".latest.zip \
             --create-dirs --output \
-            "$SRC_HOME"latest_src/odoo_"$ODOO_VERSION".latest.zip
-        unzip -q "$SRC_HOME"latest_src/odoo_"$ODOO_VERSION".latest.zip \
-            -d "$SRC_HOME"latest_src
+            "$SRC_HOME"temp/odoo_"$ODOO_VERSION".latest.zip
+        unzip -q "$SRC_HOME"temp/odoo_"$ODOO_VERSION".latest.zip \
+            -d "$SRC_HOME"temp
         rsync -a --exclude '*.zip' \
-            "$SRC_HOME"latest_src/odoo-"$ODOO_VERSION"*/ \
+            "$SRC_HOME"temp/odoo-"$ODOO_VERSION"*/ \
             "$SRC_HOME"
-        rm -rf "$SRC_HOME"latest_src
+        rm -rf "$SRC_HOME"temp
 
         echo -e "\nOdoo Community $ODOO_VERSION was downloaded \n"
     ;;
@@ -67,14 +68,14 @@ download_odoo_enterprise() {
             curl -H "Authorization: token $token" \
                 -H 'Accept: application/vnd.github.v4.raw' \
                 --create-dirs --output \
-                "$SRC_HOME"latest_src/enterprise_"$ODOO_VERSION".latest.zip \
+                "$SRC_HOME"temp/enterprise_"$ODOO_VERSION".latest.zip \
                 -L https://github.com/odoo/enterprise/archive/"$ODOO_VERSION".zip
-            unzip -q "$SRC_HOME"latest_src/enterprise_"$ODOO_VERSION".latest.zip \
-                -d "$SRC_HOME"latest_src
+            unzip -q "$SRC_HOME"temp/enterprise_"$ODOO_VERSION".latest.zip \
+                -d "$SRC_HOME"temp
             rsync -a --exclude '*.zip' \
-                "$SRC_HOME"latest_src/enterprise-"$ODOO_VERSION"/ \
+                "$SRC_HOME"temp/enterprise-"$ODOO_VERSION"/ \
                 "$SRC_HOME"
-            rm -rf "$SRC_HOME"latest_src
+            rm -rf "$SRC_HOME"temp
 
             echo -e "\nOdoo Enterprise $ODOO_VERSION was downloaded \n"
 
@@ -106,14 +107,14 @@ download_odoo_stubs() {
 
         curl https://codeload.github.com/trinhanhngoc/odoo-stubs/zip/"$ODOO_VERSION" \
             --create-dirs --output \
-            "$SRC_HOME"latest_src/odoo-stubs.zip
+            "$SRC_HOME"temp/odoo-stubs.zip
 
-        unzip -q "$SRC_HOME"latest_src/odoo-stubs.zip \
-            -d "$SRC_HOME"latest_src
+        unzip -q "$SRC_HOME"temp/odoo-stubs.zip \
+            -d "$SRC_HOME"temp
         rsync -a --exclude '*.zip' \
-            "$SRC_HOME"latest_src/odoo-stubs-"$ODOO_VERSION"/ \
+            "$SRC_HOME"temp/odoo-stubs-"$ODOO_VERSION"/ \
             "$SRC_HOME"
-        rm -rf "$SRC_HOME"latest_src
+        rm -rf "$SRC_HOME"temp
 
         echo -e "\nOdoo Stubs $ODOO_VERSION was downloaded \n"
     ;;
@@ -170,7 +171,7 @@ case ${UPDATE_ALL:0:1} in
         download_odoo_community
         download_odoo_enterprise
         download_odoo_stubs
-        download_odoo_image
+        #download_odoo_image
 
     done
 
@@ -181,13 +182,51 @@ case ${UPDATE_ALL:0:1} in
         echo -e "\nThese are the supported Odoo Versions"
         echo -e "=====================================\n"
         PS3='Please select the one you would like: '
-        options=("14 Community & Enterprise" "14 Community" "14 Enterprise" \
+        options=("16 Community & Enterprise" "16 Community" "16 Enterprise" \
+                 "15 Community & Enterprise" "15 Community" "15 Enterprise" \
+                 "14 Community & Enterprise" "14 Community" "14 Enterprise" \
                  "13 Community & Enterprise" "13 Community" "13 Enterprise" \
                  "12 Community & Enterprise" "12 Community" "12 Enterprise" \
                  Quit)
         select opt in "${options[@]}"
         do
             case $opt in
+                "16 Community & Enterprise")
+                    ODOO_VERSION="16.0"
+                    DOWNLOAD_ODOO_COMMUNITY="Y"
+                    DOWNLOAD_ODOO_ENTERPRISE="Y"
+                    break
+                    ;;
+                "16 Community")
+                    ODOO_VERSION="16.0"
+                    DOWNLOAD_ODOO_COMMUNITY="Y"
+                    DOWNLOAD_ODOO_ENTERPRISE="N"
+                    break
+                    ;;
+                "16 Enterprise")
+                    ODOO_VERSION="16.0"
+                    DOWNLOAD_ODOO_COMMUNITY="N"
+                    DOWNLOAD_ODOO_ENTERPRISE="Y"
+                    break
+                    ;;
+                "15 Community & Enterprise")
+                    ODOO_VERSION="15.0"
+                    DOWNLOAD_ODOO_COMMUNITY="Y"
+                    DOWNLOAD_ODOO_ENTERPRISE="Y"
+                    break
+                    ;;
+                "15 Community")
+                    ODOO_VERSION="15.0"
+                    DOWNLOAD_ODOO_COMMUNITY="Y"
+                    DOWNLOAD_ODOO_ENTERPRISE="N"
+                    break
+                    ;;
+                "15 Enterprise")
+                    ODOO_VERSION="15.0"
+                    DOWNLOAD_ODOO_COMMUNITY="N"
+                    DOWNLOAD_ODOO_ENTERPRISE="Y"
+                    break
+                    ;;
                 "14 Community & Enterprise")
                     ODOO_VERSION="14.0"
                     DOWNLOAD_ODOO_COMMUNITY="Y"
@@ -253,7 +292,7 @@ case ${UPDATE_ALL:0:1} in
         download_odoo_community
         download_odoo_enterprise
         download_odoo_stubs
-        download_odoo_image
+        #download_odoo_image
         download_odoo_stack_images
 
     ;;

@@ -2,11 +2,11 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <content url="file://$MODULE_DIR$/../../odoo_latest_src/appstore/ODOO_VERSION.0" />
-    <content url="file://$MODULE_DIR$/../../odoo_latest_src/community/ODOO_VERSION.0/odoo" />
-    <content url="file://$MODULE_DIR$/../../odoo_latest_src/enterprise/ODOO_VERSION.0" />
-    <content url="file://$MODULE_DIR$/../../odoo_latest_src/odoo-stubs/ODOO_VERSION.0/odoo-stubs" />
-    <content url="file://$MODULE_DIR$/../../odoo_latest_src/themes/ODOO_VERSION.0" />
+    <content url="file://$MODULE_DIR$/../../odoo_src/appstore/ODOO_VERSION.0" />
+    <content url="file://$MODULE_DIR$/../../odoo_src/community/ODOO_VERSION.0/odoo" />
+    <content url="file://$MODULE_DIR$/../../odoo_src/enterprise/ODOO_VERSION.0" />
+    <content url="file://$MODULE_DIR$/../../odoo_src/odoo-stubs/ODOO_VERSION.0/odoo-stubs" />
+    <content url="file://$MODULE_DIR$/../../odoo_src/themes/ODOO_VERSION.0" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

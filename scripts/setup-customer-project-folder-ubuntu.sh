@@ -4,24 +4,30 @@ echo 'Type the name of the customer (without spaces or special characters. Dash 
 read -r CUSTOMER_PROJECT_ID
 CUSTOMER_PROJECT_HOME=~/projects/customers/$CUSTOMER_PROJECT_ID/
 CUSTOMER_PROJECT_HOME_IDEA="$CUSTOMER_PROJECT_HOME"idea/
-ODOO_SOURCE_HOME=~/projects/odoo_latest_src/
+ODOO_SOURCE_HOME=~/projects/odoo_src/
 
 if [ -d "$CUSTOMER_PROJECT_HOME" ]; then
     echo "The directory $CUSTOMER_PROJECT_HOME exists. Please use a different one."
     exit 1
 else
-    echo 'Will you develop for the Enterprise Edition [y/n]? ' 
+    echo 'Will you develop for the Enterprise Edition [y/n]? (default: y)' 
     read -r IS_ENTERPRISE
-    echo 'Which Odoo Version do you want to develop for [12, 13, 14]? ' 
+    IS_ENTERPRISE="${IS_ENTERPRISE:=y}"
+    echo 'Which Odoo Version do you want to develop for [12, 13, 14, 15, 16]? (default: 15)' 
     read -r ODOO_VERSION
-    echo 'Which port on the host will be mapped to 8069 in the odoo-container? ' 
+    ODOO_VERSION="${ODOO_VERSION:=15}"
+    echo 'Which port on the host will be mapped to 8069 in the odoo-container? (default: 8069)' 
     read -r ODOO_PORT
-    echo 'Which port on the host will be mapped to 80 in the pgadmin container? ' 
+    ODOO_PORT="${ODOO_PORT:=8069}"
+    echo 'Which port on the host will be mapped to 80 in the pgadmin container? (default: 80)' 
     read -r PGADMIN_PORT
-    echo 'Which port on the host will be mapped to 5432 in the postgres container? ' 
+    PGADMIN_PORT="${PGADMIN_PORT:=80}"
+    echo 'Which port on the host will be mapped to 5432 in the postgres container? (default: 5432)' 
     read -r POSTGRES_PORT
-    echo 'Which port on the host will be mapped to 8080 in the mail container? (Do not use 9000 as it will be used by Portainer)' 
+    POSTGRES_PORT="${POSTGRES_PORT:=5432}"
+    echo 'Which port on the host will be mapped to 8080 in the mail container? (default: 8080)' 
     read -r MAIL_PORT
+    MAIL_PORT="${MAIL_PORT:=8080}"
 
     printf '\nCreating %s \n' "$CUSTOMER_PROJECT_HOME"
     mkdir -p "$CUSTOMER_PROJECT_HOME"
