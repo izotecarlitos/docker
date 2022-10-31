@@ -13,7 +13,7 @@ pipdeptree
 pipreqs 
 pretty_bad_protocol
 pydevd-odoo
-pydevd-pycharm~=212.4746.96
+pydevd-pycharm~=222.4167.33
 pylint
 pylint-odoo
 pyOpenSSL
