@@ -1,10 +1,14 @@
 #!/bin/sh
 
-echo 'Type the name of the customer (without spaces or special characters. Dash - or underscore _ are accepted): ' 
+echo 'Type the name of the customer-project' 
+echo 'Do NOT use spaces or special characters.'
+echo 'Dash - or underscore _ are accepted): ' 
 read -r CUSTOMER_PROJECT_ID
 CUSTOMER_PROJECT_HOME=~/projects/customers/$CUSTOMER_PROJECT_ID/
 CUSTOMER_PROJECT_HOME_IDEA="$CUSTOMER_PROJECT_HOME"idea/
 ODOO_SOURCE_HOME=~/projects/odoo_src/
+# community= odoo; enterprise=odoo_ee
+ODOO_EDITION=odoo
 
 if [ -d "$CUSTOMER_PROJECT_HOME" ]; then
     echo "The directory $CUSTOMER_PROJECT_HOME exists. Please use a different one."
@@ -36,15 +40,9 @@ else
     cp -a ../customer-project-folder/. "$CUSTOMER_PROJECT_HOME"
     mv "$CUSTOMER_PROJECT_HOME"gitignore "$CUSTOMER_PROJECT_HOME".gitignore
 
-    printf 'Configuring files and folders\n'
-    sed -i "s|ODOO_VERSION|$ODOO_VERSION|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml        
-    sed -i "s|ODOO_PORT|$ODOO_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
-    sed -i "s|POSTGRES_PORT|$POSTGRES_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
-    sed -i "s|PGADMIN_PORT|$PGADMIN_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
-    sed -i "s|MAIL_PORT|$MAIL_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
-
     export FOLDERS="backups extra-addons filestore"
 
+    printf 'Creating folders\n'
     for folder in $FOLDERS; do
         mkdir -p "$CUSTOMER_PROJECT_HOME/$folder"
     done
@@ -55,13 +53,16 @@ else
     case "$IS_ENTERPRISE" in
         [yY][eE][sS]|[yY]) 
             printf 'Setup done for Enterprise Edition. \n'
+            ODOO_EDITION=odoo_ee
             ;;
         *)
             sed -i '/enterprise/d' "$CUSTOMER_PROJECT_HOME_IDEA"CUSTOMER_PROJECT_ID.iml "$CUSTOMER_PROJECT_HOME_IDEA"workspace.xml "$CUSTOMER_PROJECT_HOME"docker-compose.yml
             printf 'Setup done for Community Edition. \n'
+            ODOO_EDITION=odoo
             ;;
     esac
 
+    printf 'Seting up PyCharm project\n'
     sed -i "s|ODOO_VERSION|$ODOO_VERSION|g" "$CUSTOMER_PROJECT_HOME_IDEA"CUSTOMER_PROJECT_ID.iml
     mv "$CUSTOMER_PROJECT_HOME_IDEA"CUSTOMER_PROJECT_ID.iml "$CUSTOMER_PROJECT_HOME_IDEA""$CUSTOMER_PROJECT_ID".iml
 
@@ -77,5 +78,15 @@ else
     
     mv "$CUSTOMER_PROJECT_HOME_IDEA" "$CUSTOMER_PROJECT_HOME".idea/
 
+    printf 'Setting up docker-compose.yml\n'
+    sed -i "s|PROJECT|$CUSTOMER_PROJECT_ID|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+    sed -i "s|ODOO_EDITION|$ODOO_EDITION|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+    sed -i "s|ODOO_VERSION|$ODOO_VERSION|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+    sed -i "s|ODOO_PORT|$ODOO_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+    sed -i "s|POSTGRES_PORT|$POSTGRES_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+    sed -i "s|PGADMIN_PORT|$PGADMIN_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+    sed -i "s|MAIL_PORT|$MAIL_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+
     printf 'Success! Project %s has been created at %s\n' "$CUSTOMER_PROJECT_ID" "$CUSTOMER_PROJECT_HOME"
+
 fi
