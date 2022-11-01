@@ -4,7 +4,7 @@ services:
 
   # Postgres database server
   db:
-    container_name: postgres_for_vODOO_VERSION
+    container_name: PROJECT_pgdb_vODOO_VERSION
     image: postgres:12.5
     volumes:
       - pg-data:/var/lib/postgresql/data
@@ -18,7 +18,7 @@ services:
 
   # Pgadmin4 
   pgadmin:
-    container_name: pgadmin4_for_vODOO_VERSION
+    container_name: PROJECT_pgadm_vODOO_VERSION
     image: dpage/pgadmin4:latest
     volumes:
       - pgadmin-data:/var/lib/pgadmin
@@ -31,7 +31,7 @@ services:
 
   # Mail Server (for test/debug Odoo emails)    
   mail:
-    container_name: mail_for_vODOO_VERSION
+    container_name: PROJECT_mail_vODOO_VERSION
     image: greenmail/standalone:latest
     ports:
       - "25:25"
@@ -50,9 +50,8 @@ services:
 
   # Odoo Server
   web:
-    container_name: odoo_vODOO_VERSION
-    image: izotecarlitos/odoo-container:ODOO_VERSION.0
-    #image: odoo:ODOO_VERSION.0
+    container_name: PROJECT_odoo_vODOO_VERSION
+    image: izotecarlitos/ODOO_EDITION:ODOO_VERSION.0
     depends_on:
       - db
     ports:
@@ -65,11 +64,11 @@ services:
       - ./extra-addons:/mnt/extra-addons
       - ./filestore:/var/lib/odoo
       # Odoo shared sources to be used by the running container
-      #- ../../odoo_latest_src/community/vODOO_VERSION/odoo:/mnt/community                      # See note 1 
-      - ../../odoo_latest_src/community/ODOO_VERSION.0/odoo:/usr/lib/python3/dist-packages/odoo  # See note 1
-      #- ../../odoo_latest_src/enterprise/ODOO_VERSION.0/:/mnt/enterprise
-      - ../../odoo_latest_src/themes/ODOO_VERSION.0:/mnt/themes
-      - ../../odoo_latest_src/appstore/ODOO_VERSION.0:/mnt/appstore
+      #- ../../odoo_src/community/vODOO_VERSION/odoo:/mnt/community                      # See note 1 
+      - ../../odoo_src/community/ODOO_VERSION.0/odoo:/usr/lib/python3/dist-packages/odoo  # See note 1
+      #- ../../odoo_src/enterprise/ODOO_VERSION.0/:/mnt/enterprise
+      - ../../odoo_src/themes/ODOO_VERSION.0:/mnt/themes
+      - ../../odoo_src/appstore/ODOO_VERSION.0:/mnt/appstore
 
 volumes:
   # Postgres /var/lib/postgresql/data
