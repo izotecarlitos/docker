@@ -12,7 +12,7 @@ else
     read -p 'Will you develop for the Enterprise Edition [y/n]? ' IS_ENTERPRISE
     read -p 'Which Odoo Version do you want to develop for [12, 13, 14]? ' ODOO_VERSION
     read -p 'Which port on the host will be mapped to 8069 in the odoo-container? ' ODOO_PORT
-    read -p 'Which port on the host will be mapped to 80 in the pgadmin container? ' PGADMIN_PORT
+    read -p 'Which port on the host will be mapped to 80 in the DB manager container? ' DBMAN_PORT
     read -p 'Which port on the host will be mapped to 5432 in the postgres container? ' POSTGRES_PORT
     read -p 'Which port on the host will be mapped to 8080 in the mail container? (Do not use 9000 as it will be used by Portainer)' MAIL_PORT
 
@@ -27,7 +27,7 @@ else
     sed -i '' "s|ODOO_VERSION|$ODOO_VERSION|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
     sed -i '' "s|ODOO_PORT|$ODOO_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
     sed -i '' "s|POSTGRES_PORT|$POSTGRES_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
-    sed -i '' "s|PGADMIN_PORT|$PGADMIN_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+    sed -i '' "s|DBMAN_PORT|$DBMAN_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
     sed -i '' "s|MAIL_PORT|$MAIL_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
 
     FOLDERS=(backups extra-addons filestore)

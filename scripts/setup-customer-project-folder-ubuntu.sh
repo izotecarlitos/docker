@@ -23,9 +23,9 @@ else
     echo 'Which port on the host will be mapped to 8069 in the odoo-container? (default: 8069)' 
     read -r ODOO_PORT
     ODOO_PORT="${ODOO_PORT:=8069}"
-    echo 'Which port on the host will be mapped to 80 in the pgadmin container? (default: 80)' 
-    read -r PGADMIN_PORT
-    PGADMIN_PORT="${PGADMIN_PORT:=80}"
+    echo 'Which port on the host will be mapped to 80 in the DB manager container? (default: 80)' 
+    read -r DBMAN_PORT
+    DBMAN_PORT="${DBMAN_PORT:=80}"
     echo 'Which port on the host will be mapped to 5432 in the postgres container? (default: 5432)' 
     read -r POSTGRES_PORT
     POSTGRES_PORT="${POSTGRES_PORT:=5432}"
@@ -84,7 +84,7 @@ else
     sed -i "s|ODOO_VERSION|$ODOO_VERSION|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
     sed -i "s|ODOO_PORT|$ODOO_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
     sed -i "s|POSTGRES_PORT|$POSTGRES_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
-    sed -i "s|PGADMIN_PORT|$PGADMIN_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
+    sed -i "s|DBMAN_PORT|$DBMAN_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
     sed -i "s|MAIL_PORT|$MAIL_PORT|g" "$CUSTOMER_PROJECT_HOME"docker-compose.yml
 
     printf 'Success! Project %s has been created at %s\n' "$CUSTOMER_PROJECT_ID" "$CUSTOMER_PROJECT_HOME"

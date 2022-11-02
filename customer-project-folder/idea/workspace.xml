@@ -26,7 +26,7 @@
           <option name="services">
             <list>
               <option value="db" />
-              <option value="pgadmin" />
+              <option value="dbman" />
               <option value="mail" />
               <option value="web" />
             </list>

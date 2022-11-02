@@ -146,7 +146,7 @@ download_odoo_stack_images() {
     echo -e "Downloading Images for Odoo Stacks \n"
 
     docker pull greenmail/standalone:latest
-    docker pull dpage/pgadmin4:latest
+    docker pull dbeaver/cloudbeaver:latest
     docker pull postgres:12.5
     
     echo -e "\nImages for Odoo Stacks were downloaded \n"
